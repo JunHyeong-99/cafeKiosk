@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 import sample.cafekiosk.spring.api.controller.order.request.OrderCreateRequest;
 import sample.cafekiosk.spring.api.service.order.response.OrderResponse;
 import sample.cafekiosk.spring.domain.BaseEntity;
@@ -30,6 +31,7 @@ import static sample.cafekiosk.spring.domain.product.ProductType.*;
 
 @ActiveProfiles("test")
 @SpringBootTest
+@Transactional
 class OrderServiceTest {
 
     @Autowired
@@ -117,7 +119,7 @@ class OrderServiceTest {
         productRepository.saveAll(List.of(product1, product2, product3));
 
         Stock stock1 = Stock.create("001", 2);
-        Stock stock2 = Stock.create("001", 2);
+        Stock stock2 = Stock.create("002", 2);
         stockRepository.saveAll(List.of(stock1, stock2));
         OrderCreateRequest request = OrderCreateRequest.builder()
                 .productNumbers(List.of("001", "001", "002", "003"))
