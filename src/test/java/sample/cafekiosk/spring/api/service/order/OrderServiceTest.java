@@ -17,6 +17,7 @@ import sample.cafekiosk.spring.domain.product.Product;
 import sample.cafekiosk.spring.domain.product.ProductRepository;
 import sample.cafekiosk.spring.domain.product.ProductType;
 import sample.cafekiosk.spring.domain.stock.Stock;
+import sample.cafekiosk.spring.domain.stock.StockRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -39,6 +40,8 @@ class OrderServiceTest {
     private OrderRepository orderRepository;
     @Autowired
     private OrderProductRepository orderProductRepository;
+    @Autowired
+    private StockRepository stockRepository;
 
 
     @AfterEach
@@ -115,6 +118,7 @@ class OrderServiceTest {
 
         Stock stock1 = Stock.create("001", 2);
         Stock stock2 = Stock.create("001", 2);
+        stockRepository.saveAll(List.of(stock1, stock2));
         OrderCreateRequest request = OrderCreateRequest.builder()
                 .productNumbers(List.of("001", "001", "002", "003"))
                 .build();
@@ -125,12 +129,21 @@ class OrderServiceTest {
         assertThat(orderResponse.getId()).isNotNull();
         assertThat(orderResponse)
                 .extracting("registeredDateTime", "totalPrice")
-                .contains(registeredTime, 4000);
-        assertThat(orderResponse.getProducts()).hasSize(2)
+                .contains(registeredTime, 10000);
+        assertThat(orderResponse.getProducts()).hasSize(4)
                 .extracting("productNumber", "price")
                 .containsExactlyInAnyOrder(
                         tuple("001", 1000),
-                        tuple("002", 3000)
+                        tuple("001", 1000),
+                        tuple("002", 3000),
+                        tuple("003", 5000)
+                );
+        List<Stock> stocks = stockRepository.findAll();
+        assertThat(stocks).hasSize(2)
+                .extracting("productNumber", "quantity")
+                .containsExactlyInAnyOrder(
+                        tuple("001", 0),
+                        tuple("002", 1)
                 );
     }
 
