@@ -21,5 +21,5 @@ public class CafekioskApplication {
 //builider에는 private
 //
 //@EntityListeners(AuditingEntityListener.class) 사용법
-//
+// 36분
 }

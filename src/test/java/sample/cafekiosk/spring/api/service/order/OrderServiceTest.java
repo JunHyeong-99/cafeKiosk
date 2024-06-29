@@ -30,7 +30,6 @@ import static sample.cafekiosk.spring.domain.product.ProductType.*;
 
 @ActiveProfiles("test")
 @SpringBootTest
-@Transactional
 class OrderServiceTest {
 
     @Autowired
@@ -50,6 +49,7 @@ class OrderServiceTest {
         orderProductRepository.deleteAllInBatch();
         productRepository.deleteAllInBatch();
         orderRepository.deleteAllInBatch();
+        stockRepository.deleteAllInBatch();
     }
 
     @DisplayName("주분번호 리스트를 받아 주문을 생성한다.")
