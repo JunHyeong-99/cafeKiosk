@@ -30,7 +30,7 @@ public class OrderStatisticsService {
                 .mapToInt(Order::getTotalPrice)
                 .sum();
         //메일 전송
-        boolean result = mailService.snedMail("no-reply@cafekiosk.com"
+        boolean result = mailService.sendMail("no-reply@cafekiosk.com"
                 , email,
                 String.format("[매출통계] %s", orderDate), 
                 String.format("총 매출 합계는 %s원입니다.", totalAmount));
