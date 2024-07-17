@@ -9,6 +9,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import sample.cafekiosk.spring.api.ControllerTestSupport;
 import sample.cafekiosk.spring.api.controller.product.dto.ProductCreateRequest;
 import sample.cafekiosk.spring.api.service.product.ProductService;
 import sample.cafekiosk.spring.api.service.product.response.ProductResponse;
@@ -25,18 +26,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-@WebMvcTest(controllers = ProductController.class) // 컨트롤러 빈들만 띄운다.
-    //mvc에서는 파라미터의 유효성 검사
-class ProductControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+class ProductControllerTest extends ControllerTestSupport {
 
-    @Autowired
-    private ObjectMapper objectMapper;
-    
-    @MockBean // 컨테이너에 mock으로 만든 객체를 넣어준다.
-    private ProductService productService;
 
 
     @DisplayName("신규 상품을 등록한다.")
