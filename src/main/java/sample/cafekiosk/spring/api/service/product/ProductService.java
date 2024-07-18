@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final ProductNumberFctory productNumberFctory;
 
     public List<ProductResponse> getSellingProducts() {
         List<Product> products = productRepository.findAllBySellingStatusIn(ProductSellingStatus.forDisplay());
@@ -32,7 +33,7 @@ public class ProductService {
 
     @Transactional
     public ProductResponse createProduct(ProductCreateRequest request) {
-        String nextProductNUmber = createNextProductNumber();
+        String nextProductNUmber = productNumberFctory.createNextProductNumber();
 
         Product product = request.toEntity(nextProductNUmber);
         Product savedProduct = productRepository.save(product);
@@ -40,15 +41,6 @@ public class ProductService {
         return ProductResponse.of(savedProduct);
     }
 
-    private String createNextProductNumber() {
-        //productNumber
-        String latestProductNumber = productRepository.findLatestProductNumber();
-        if (latestProductNumber == null) {
-            return "001";
-        }
-        int lastestProductNumberInt = Integer.parseInt(latestProductNumber);
-        int nextProductNUmberInt = lastestProductNumberInt + 1;
-        return String.format("%03d", nextProductNUmberInt);
-    }
+
 
 }
